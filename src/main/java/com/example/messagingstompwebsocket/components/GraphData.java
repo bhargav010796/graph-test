@@ -47,21 +47,19 @@ public class GraphData {
         this.graphData.add( new Object[] {1653581431,16.52});
         this.graphData.add( new Object[] {1653581463,23.33});
         
-        
        //Sorting graphData List
        Collections.sort(graphData, new Comparator<Object[]>() {
 
 		@Override
 		public int compare(Object[] o1, Object[] o2) {
-			int diff=0;
-			for (int i = 0; i < Math.min(o1.length, o2.length); i++) {
-				diff = (Integer) o2[0]- (Integer)o1[0];
+			int	diff = (Integer) o2[0]- (Integer)o1[0];
 				if(diff==0) {
 					double timeValue=  (Double) o2[1]- (Double)o1[1];
 					diff= (int) timeValue;
 				}
-				if(diff!=0) return diff;
-			}
+				if(diff!=0) { 
+					return diff;
+				}
 			return 0;
 		}
     	 }); 
