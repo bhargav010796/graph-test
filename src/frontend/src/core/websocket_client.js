@@ -1,7 +1,7 @@
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
-export default class {
+export default class ApiClient {
   constructor(action) {
     this.action = action;
     this.stompClient = null;
@@ -12,7 +12,7 @@ export default class {
     this.errorHandlerFunction = () => {};
   }
 
-  addArgument(arg = null) {
+  addArgument(arg) {
     this.args.push(arg);
   }
 
@@ -26,20 +26,24 @@ export default class {
 
   connect() {
     this.stompClient = Stomp.over(function () {
-      return new SockJS("http://localhost:8089/ws/");
+      return new SockJS(process.env.REACT_APP_API_URL);
     });
 
     // automatic reconnect (delay in milli seconds)
-    this.stompClient.reconnect_delay = 5000;
-    this.stompClient.heartbeatIncoming = 4000;
-    this.stompClient.heartbeatOutgoing = 4000;
+    this.stompClient.reconnect_delay = process.env.REACT_APP_Reconnect_delay;
+    this.stompClient.heartbeatIncoming =
+      process.env.REACT_APP_Heartbeat_Incoming;
+    this.stompClient.heartbeatOutgoing =
+      process.env.REACT_APP_Heartbeat_Outgoing;
 
-    this.stompClient.connect({}, (frame) => {
-      console.log("connected: " + frame);
+    this.stompClient.connect({}, () => {
       this.stompClient.subscribe("/topic/graph_data", (message) => {
-        console.log("message >>> %o", message);
-        message = JSON.parse(message.body);
-        this.handlerFunction(message, this.args);
+        try {
+          message = JSON.parse(message.body);
+          this.handlerFunction(message, this.args);
+        } catch (e) {
+          this.disconnect();
+        }
       });
     });
   }
@@ -48,6 +52,5 @@ export default class {
     if (this.stompClient !== null) {
       this.stompClient.disconnect();
     }
-    console.log("Disconnected!");
   }
 }

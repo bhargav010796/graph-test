@@ -1,5 +1,6 @@
-package com.example.messagingstompwebsocket;
+package com.example.messagingstompwebsocket.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -16,6 +17,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 @EnableScheduling
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+	
+	@Value("${cros.origin.url}")
+	private String userBucketPath;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -26,7 +30,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*")
+                .setAllowedOriginPatterns(userBucketPath)
                 .withSockJS();
     }
 
@@ -35,22 +39,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         return new WebMvcConfigurer() {
             @Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedMethods("*");
+				registry.addMapping("/**").
+				allowedMethods("*");
 
 			}
         };
     }
-
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/app/**")
-//                        .allowedMethods("*")
-//                        .allowedOrigins("*");
-//            }
-//        };
-//    }
 
 }

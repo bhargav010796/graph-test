@@ -1,11 +1,14 @@
 package com.example.messagingstompwebsocket.components;
 
+import org.apache.coyote.http11.HeadersTooLargeException;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import javax.xml.ws.http.HTTPException;
 
 @Component
 public class GraphData {
@@ -72,12 +75,11 @@ public class GraphData {
      * @return
      */
     public Object[] getHeadObject(){
-    	Object[] data;
-    	//When the end of the list is reached, the websocket continues to reach into the data collection.
-    	if(graphData.size()==this.index) {
-    		index=0;
+    	if(graphData.size() == this.index) {
+    		throw new ArrayIndexOutOfBoundsException("error");    		
     	}
-         data = this.graphData.get(this.index);
+    	
+    	Object[] data;	 data = this.graphData.get(this.index);
         this.index += 1;
 
         return data;

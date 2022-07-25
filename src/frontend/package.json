@@ -10,6 +10,7 @@
     "axios": "^0.24.0",
     "cors": "^2.8.5",
     "dygraphs": "^2.1.0",
+    "env-cmd": "^10.1.0",
     "jquery": "^3.6.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -19,10 +20,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "env-cmd -f .env.development react-scripts test",
+    "eject": "react-scripts eject",
+    "start:dev": "env-cmd -f .env.development react-scripts start",
+    "build:staging": "env-cmd -f .env.staging npm run-script build",
+    "build:qa": "env-cmd -f .env.qa npm run-script build",
+    "build:production": "env-cmd -f .env.production npm run build-css && react-scripts build"
   },
   "eslintConfig": {
     "extends": [

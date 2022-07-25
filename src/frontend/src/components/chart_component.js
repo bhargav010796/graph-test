@@ -1,24 +1,19 @@
 import React, { useEffect } from "react";
 import Dygraph from "dygraphs";
 
-export default (props) => {
-  var dygraphCanvas = null;
-  var motorSpeedDygraph = null;
-  dygraphCanvas = null;
-  dygraphCanvas = React.createRef();
+//props can also be declared as prop-types and define explict types.
+const SpeedChart = (props) => {
+  var dygraphCanvas = React.createRef();
 
   useEffect(() => {
-    console.log(">> chart component updated with new data.. %o", props.data);
-
     if (props.data.length === 0 || dygraphCanvas === null) {
       return;
     }
 
-    motorSpeedDygraph = new Dygraph(
+    var motorSpeedDygraph = new Dygraph(
       document.getElementById("speed_dygraph"),
       props.data,
       {
-        // title: props.name,
         drawPoints: true,
         showRoller: false,
         rollPeriod: 1,
@@ -45,11 +40,7 @@ export default (props) => {
     return () => {
       clearInterval(window.graphInterval);
     };
-  }, [props.data]);
-
-  //   #speed_dygraph .dygraph-ylabel {
-  //     transform: rotate(270deg);
-  // }
+  }, [props, dygraphCanvas]);
 
   return (
     <div>
@@ -59,8 +50,6 @@ export default (props) => {
           id="dual_x_div"
           style={{ width: "60%", height: "auto" }}
         >
-          {/* <style>.dygraph-legend { text-align: right; background: none; }</style> */}
-
           <div
             ref={dygraphCanvas}
             id="speed_dygraph"
@@ -76,3 +65,5 @@ export default (props) => {
     </div>
   );
 };
+
+export default SpeedChart;
