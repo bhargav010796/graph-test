@@ -19,7 +19,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	
 	@Value("${cros.origin.url}")
-	private String userBucketPath;
+	private String myHostURL;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -30,7 +30,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns(userBucketPath)
+                .setAllowedOriginPatterns(myHostURL)
                 .withSockJS();
     }
 

@@ -22,7 +22,7 @@ public class GraphDataController {
 	public GraphDataController(SimpMessagingTemplate simpMessagingTemplate, GraphData graphData) {
 
 		this.graphData = graphData;
-		this.simpMessagingTemplate = simpMessagingTemplate;
+		this.simpMessagingTemplate = simpMessagingTemplate; 
 	}
 
 	@Scheduled(fixedRate = 1000)
