@@ -1,4 +1,4 @@
-name: My project
+name: Graph Project Deploynment
 
 on:
   push:
